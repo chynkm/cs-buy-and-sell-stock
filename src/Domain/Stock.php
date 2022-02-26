@@ -3,15 +3,17 @@ declare (strict_types = 1);
 
 namespace App\Domain;
 
+use Exception;
+
 class Stock
 {
     public $stock;
     const SHARECOUNT = 200;
     const ROUNDOFF = 2;
 
-    public function __construct(array $stock)
+    public function __construct(array $stocks)
     {
-        $this->stock = $stock;
+        $this->stocks = $stocks;
     }
 
     public function getProfitAndDates()
@@ -19,15 +21,15 @@ class Stock
         $profit = PHP_INT_MIN;
         $total = 0;
         $totalSquared = 0;
-        for ($i = 0; $i < count($this->stock); $i++) {
-            $total += $this->stock[$i]['price'];
-            $totalSquared += $this->stock[$i]['price'] * $this->stock[$i]['price'];
-            for ($j = $i + 1; $j < count($this->stock); $j++) {
-                $difference = $this->stock[$j]['price'] - $this->stock[$i]['price'];
+        for ($i = 0; $i < count($this->stocks); $i++) {
+            $total += $this->stocks[$i]['price'];
+            $totalSquared += $this->stocks[$i]['price'] * $this->stocks[$i]['price'];
+            for ($j = $i + 1; $j < count($this->stocks); $j++) {
+                $difference = $this->stocks[$j]['price'] - $this->stocks[$i]['price'];
                 if ($difference > $profit) {
                     $profit = $difference;
-                    $buyDate = $this->stock[$i]['date'];
-                    $sellDate = $this->stock[$j]['date'];
+                    $buyDate = $this->stocks[$i]['date'];
+                    $sellDate = $this->stocks[$j]['date'];
                 }
             }
         }
@@ -59,8 +61,8 @@ class Stock
     {
         $profit = PHP_INT_MIN;
 
-        foreach ($this->stock as $dateI => $priceI) {
-            foreach ($this->stock as $dateJ => $priceJ) {
+        foreach ($this->stocks as $dateI => $priceI) {
+            foreach ($this->stocks as $dateJ => $priceJ) {
                 if ($dateJ > $dateI) {
                     $difference = $priceJ - $priceI;
 
@@ -91,12 +93,12 @@ class Stock
         $total = 0;
         $totalSquared = 0;
 
-        foreach ($this->stock as $dateI => $priceI) {
+        foreach ($this->stocks as $dateI => $priceI) {
             $total += $priceI;
             $totalSquared += $priceI * $priceI;
         }
 
-        $n = count($this->stock);
+        $n = count($this->stocks);
         $mean = $total / $n;
         $standardDeviation = sqrt(($totalSquared / $n) - ($mean * $mean));
 
@@ -104,5 +106,30 @@ class Stock
             'mean' => round($mean, self::ROUNDOFF),
             'standardDeviation' => round($standardDeviation, self::ROUNDOFF),
         ];
+    }
+
+    /**
+     * Retrieve the previous date stock price
+     *
+     * @return int
+     */
+    public function previousDateStockPrice(string $date)
+    {
+        if (isset($this->stocks[$date])) {
+            return $this->stocks[$date];
+        }
+
+        if ($date < key($this->stocks)) {
+            throw new Exception('The start date doesn\'t have a stock price');
+        }
+
+        foreach ($this->stocks as $stockDate => $price) {
+
+            if ($stockDate < $date) {
+                $previousPrice = $price;
+            }
+        }
+
+        return $previousPrice;
     }
 }
