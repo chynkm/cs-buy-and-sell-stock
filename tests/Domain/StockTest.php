@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
 class StockTest extends TestCase
 {
     const AAPL_STOCKS = [
-        '11-02-2020' => 320,
-        '13-02-2020' => 324,
-        '15-02-2020' => 319,
-        '18-02-2020' => 319,
-        '19-02-2020' => 323,
-        '21-02-2020' => 313,
-        '23-02-2020' => 320,
+        '2020-02-11' => 320,
+        '2020-02-13' => 324,
+        '2020-02-15' => 319,
+        '2020-02-18' => 319,
+        '2020-02-19' => 323,
+        '2020-02-21' => 313,
+        '2020-02-23' => 320,
     ];
 
     /**
@@ -103,12 +103,12 @@ class StockTest extends TestCase
         return [
             [
                 'AAPL' => self::AAPL_STOCKS,
-                'startDate' => '15-02-2020',
-                'endDate' => '21-02-2020',
+                'startDate' => '2020-02-15',
+                'endDate' => '2020-02-21',
                 'bestProfit' => [
                     'profit' => 7,
-                    'buyDate' => '21-02-2020',
-                    'sellDate' => '23-02-2020',
+                    'buyDate' => '2020-02-21',
+                    'sellDate' => '2020-02-23',
                     'stockProfit' => 1400,
                 ],
                 'meanAndStandardDeviation' => [
@@ -147,37 +147,19 @@ class StockTest extends TestCase
     public function validStockProvidersForPreviousDateStockPrice(): array
     {
         return [
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '15-02-2020',
-                'price' => 319,
-            ],
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '17-02-2020',
-                'price' => 319,
-            ],
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '14-02-2020',
-                'price' => 324,
-            ],
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '25-02-2020',
-                'price' => 320,
-            ],
+            ['date' => '2020-02-15', 'price' => 319],
+            ['date' => '2020-02-17', 'price' => 319],
+            ['date' => '2020-02-14', 'price' => 324],
+            ['date' => '2020-02-25', 'price' => 320],
         ];
     }
 
     /**
      * @dataProvider validStockProvidersForPreviousDateStockPrice
      */
-    public function testPreviousDateStockPrice(
-        array $stocks,
-        string $date,
-        int $price
-    ): void{
+    public function testPreviousDateStockPrice(string $date, int $price): void
+    {
+        $stocks = self::AAPL_STOCKS;
         $got = (new Stock($stocks))->previousDateStockPrice($date);
 
         $this->assertEquals($got, $price);
@@ -189,26 +171,64 @@ class StockTest extends TestCase
     public function inValidStockProvidersForPreviousDateStockPrice(): array
     {
         return [
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '10-02-2020',
-            ],
-            [
-                'AAPL' => self::AAPL_STOCKS,
-                'date' => '05-02-2020',
-            ],
+            ['date' => '2020-02-10'],
+            ['date' => '2020-02-05'],
         ];
     }
 
     /**
      * @dataProvider inValidStockProvidersForPreviousDateStockPrice
      */
-    public function testInvalidPreviousDateStockPrice(
-        array $stocks,
-        string $date
-    ): void{
+    public function testInvalidPreviousDateStockPrice(string $date): void
+    {
         $this->expectException(Exception::class);
+        $stocks = self::AAPL_STOCKS;
         (new Stock($stocks))->previousDateStockPrice($date);
     }
 
+    /**
+     * @return array<int, array>
+     */
+    public function missingDatesProviders(): array
+    {
+        return [
+            [
+                'date' => '2020-02-14',
+                'result' => [
+                    '2020-02-14' => 324,
+                    '2020-02-15' => 319,
+                    '2020-02-16' => 319,
+                    '2020-02-17' => 319,
+                    '2020-02-18' => 319,
+                    '2020-02-19' => 323,
+                    '2020-02-20' => 323,
+                    '2020-02-21' => 313,
+                ],
+            ],
+            [
+                'date' => '2020-02-15',
+                'result' => [
+                    '2020-02-15' => 319,
+                    '2020-02-16' => 319,
+                    '2020-02-17' => 319,
+                    '2020-02-18' => 319,
+                    '2020-02-19' => 323,
+                    '2020-02-20' => 323,
+                    '2020-02-21' => 313,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider missingDatesProviders
+     */
+    public function testFillMissingDatesOfStock($startDate, $result): void
+    {
+        $stocks = self::AAPL_STOCKS;
+        $endDate = '2020-02-21';
+
+        $got = (new Stock($stocks))->fillMissingDates($startDate, $endDate);
+        $this->assertEquals($got, $result);
+    }
 }

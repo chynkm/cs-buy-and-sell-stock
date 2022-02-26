@@ -3,13 +3,17 @@ declare (strict_types = 1);
 
 namespace App\Domain;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Exception;
 
 class Stock
 {
     public $stock;
-    const SHARECOUNT = 200;
-    const ROUNDOFF = 2;
+    const SHARE_COUNT = 200;
+    const ROUND_OFF = 2;
+    const DATE_FORMAT = 'Y-m-d';
 
     public function __construct(array $stocks)
     {
@@ -41,9 +45,9 @@ class Stock
             'profit' => $profit,
             'buyDate' => $buyDate,
             'sellDate' => $sellDate,
-            'mean' => round($mean, self::ROUNDOFF),
-            'standardDeviation' => round($standardDeviation, self::ROUNDOFF),
-            'stockProfit' => round($profit * self::SHARECOUNT, self::ROUNDOFF),
+            'mean' => round($mean, self::ROUND_OFF),
+            'standardDeviation' => round($standardDeviation, self::ROUND_OFF),
+            'stockProfit' => round($profit * self::SHARE_COUNT, self::ROUND_OFF),
         ];
     }
 
@@ -79,7 +83,7 @@ class Stock
             'profit' => $profit,
             'buyDate' => $buyDate,
             'sellDate' => $sellDate,
-            'stockProfit' => round($profit * self::SHARECOUNT, self::ROUNDOFF),
+            'stockProfit' => round($profit * self::SHARE_COUNT, self::ROUND_OFF),
         ];
     }
 
@@ -103,8 +107,8 @@ class Stock
         $standardDeviation = sqrt(($totalSquared / $n) - ($mean * $mean));
 
         return [
-            'mean' => round($mean, self::ROUNDOFF),
-            'standardDeviation' => round($standardDeviation, self::ROUNDOFF),
+            'mean' => round($mean, self::ROUND_OFF),
+            'standardDeviation' => round($standardDeviation, self::ROUND_OFF),
         ];
     }
 
@@ -120,7 +124,7 @@ class Stock
         }
 
         if ($date < key($this->stocks)) {
-            throw new Exception('The start date doesn\'t have a stock price');
+            throw new Exception('The specified start date dont have a stock price');
         }
 
         foreach ($this->stocks as $stockDate => $price) {
@@ -131,5 +135,30 @@ class Stock
         }
 
         return $previousPrice;
+    }
+
+    public function fillMissingDates(string $startDate, string $endDate)
+    {
+        $dateFilledStocks = [];
+
+        $startDate = new DateTime($startDate);
+        $endDate = (new DateTime($endDate))->modify('+1 day');
+        $interval = new DateInterval('P1D');
+        $dateRange = new DatePeriod($startDate, $interval, $endDate);
+
+        if (!isset($this->stocks[$startDate->format(self::DATE_FORMAT)])) {
+            $this->stocks[$startDate->format(self::DATE_FORMAT)] = $this->previousDateStockPrice($startDate->format(self::DATE_FORMAT));
+        }
+
+        foreach ($dateRange as $date) {
+            if (isset($this->stocks[$date->format(self::DATE_FORMAT)])) {
+                $latestStockValue = $this->stocks[$date->format(self::DATE_FORMAT)];
+                $dateFilledStocks[$date->format(self::DATE_FORMAT)] = $this->stocks[$date->format(self::DATE_FORMAT)];
+            } else {
+                $dateFilledStocks[$date->format(self::DATE_FORMAT)] = $latestStockValue;
+            }
+        }
+
+        return $dateFilledStocks;
     }
 }
