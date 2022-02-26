@@ -28,6 +28,9 @@ class StockTest extends TestCase
                     'profit' => 7,
                     'buyDate' => '21-02-2020',
                     'sellDate' => '23-02-2020',
+                    'mean' => 319.71,
+                    'standardDeviation' => 3.28,
+                    'profit' => 1400,
                 ],
             ],
             [
@@ -44,6 +47,9 @@ class StockTest extends TestCase
                     'profit' => 20,
                     'buyDate' => '11-02-2020',
                     'sellDate' => '16-02-2020',
+                    'mean' => 1509.86,
+                    'standardDeviation' => 17.27,
+                    'profit' => 4000,
                 ],
 
             ],
@@ -60,6 +66,9 @@ class StockTest extends TestCase
                     'profit' => 5,
                     'buyDate' => '12-02-2020',
                     'sellDate' => '15-02-2020',
+                    'mean' => 183.83,
+                    'standardDeviation' => 3.80,
+                    'profit' => 1000,
                 ],
             ],
         ];
