@@ -11,7 +11,7 @@ class StockTest extends TestCase
     /**
      * @return array<int, array>
      */
-    public function stockProvider(): array
+    public function stockProviderWithoutDates(): array
     {
         return [
             [
@@ -30,7 +30,7 @@ class StockTest extends TestCase
                     'sellDate' => '23-02-2020',
                     'mean' => 319.71,
                     'standardDeviation' => 3.28,
-                    'profit' => 1400,
+                    'stockProfit' => 1400,
                 ],
             ],
             [
@@ -49,7 +49,7 @@ class StockTest extends TestCase
                     'sellDate' => '16-02-2020',
                     'mean' => 1509.86,
                     'standardDeviation' => 17.27,
-                    'profit' => 4000,
+                    'stockProfit' => 4000,
                 ],
 
             ],
@@ -68,14 +68,14 @@ class StockTest extends TestCase
                     'sellDate' => '15-02-2020',
                     'mean' => 183.83,
                     'standardDeviation' => 3.80,
-                    'profit' => 1000,
+                    'stockProfit' => 1000,
                 ],
             ],
         ];
     }
 
     /**
-     * @dataProvider stockProvider
+     * @dataProvider stockProviderWithoutDates
      */
     public function testGetProfit(array $stock, array $result): void
     {
@@ -83,4 +83,59 @@ class StockTest extends TestCase
 
         $this->assertEquals($got, $result);
     }
+
+    /**
+     * @return array<int, array>
+     */
+    public function stockProviderWithDates(): array
+    {
+        return [
+            [
+                'AAPL' => [
+                    '11-02-2020' => 320,
+                    '13-02-2020' => 324,
+                    '15-02-2020' => 319,
+                    '18-02-2020' => 319,
+                    '19-02-2020' => 323,
+                    '21-02-2020' => 313,
+                    '23-02-2020' => 320,
+                ],
+                'startDate' => '15-02-2020',
+                'endDate' => '21-02-2020',
+                'bestProfit' => [
+                    'profit' => 7,
+                    'buyDate' => '21-02-2020',
+                    'sellDate' => '23-02-2020',
+                    'stockProfit' => 1400,
+                ],
+                'meanAndStandardDeviation' => [
+                    'mean' => 319.71,
+                    'standardDeviation' => 3.28,
+                ],
+            ],
+
+        ];
+    }
+
+    /**
+     * @dataProvider stockProviderWithDates
+     */
+    public function testGetStockInfo(
+        array $stock,
+        string $startDate,
+        string $endDate,
+        array $wantBestProfit,
+        array $wantMeanAndStandardDeviation
+    ): void{
+        $stock = new Stock($stock);
+        $gotBestProfit = $stock->bestProfit();
+        $gotMeanAndStandardDeviation = $stock->meanAndStandardDeviation();
+
+        $this->assertEquals($gotBestProfit, $wantBestProfit);
+        $this->assertEquals(
+            $gotMeanAndStandardDeviation,
+            $wantMeanAndStandardDeviation
+        );
+    }
+
 }
