@@ -20,37 +20,6 @@ class Stock
         $this->stocks = $stocks;
     }
 
-    public function getProfitAndDates()
-    {
-        $profit = PHP_INT_MIN;
-        $total = 0;
-        $totalSquared = 0;
-        for ($i = 0; $i < count($this->stocks); $i++) {
-            $total += $this->stocks[$i]['price'];
-            $totalSquared += $this->stocks[$i]['price'] * $this->stocks[$i]['price'];
-            for ($j = $i + 1; $j < count($this->stocks); $j++) {
-                $difference = $this->stocks[$j]['price'] - $this->stocks[$i]['price'];
-                if ($difference > $profit) {
-                    $profit = $difference;
-                    $buyDate = $this->stocks[$i]['date'];
-                    $sellDate = $this->stocks[$j]['date'];
-                }
-            }
-        }
-
-        $mean = $total / $i;
-        $standardDeviation = sqrt(($totalSquared / $i) - ($mean * $mean));
-
-        return [
-            'profit' => $profit,
-            'buyDate' => $buyDate,
-            'sellDate' => $sellDate,
-            'mean' => round($mean, self::ROUND_OFF),
-            'standardDeviation' => round($standardDeviation, self::ROUND_OFF),
-            'stockProfit' => round($profit * self::SHARE_COUNT, self::ROUND_OFF),
-        ];
-    }
-
     /**
      * Get stock information in a consolidated method
      */
