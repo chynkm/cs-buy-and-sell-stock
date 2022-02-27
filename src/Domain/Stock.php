@@ -13,6 +13,9 @@ class Stock
     public $stock;
     const SHARE_COUNT = 200;
     const ROUND_OFF = 2;
+    /**
+     * @todo move to config file
+     */
     const DATE_FORMAT = 'Y-m-d';
 
     public function __construct(array $stocks)

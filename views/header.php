@@ -9,3 +9,5 @@
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <div class="container">
+                <h1 class="mt-5">Stock analyzer</h1>
+                <hr>

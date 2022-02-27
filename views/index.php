@@ -1,5 +1,4 @@
 <?php include 'header.php';?>
-<h1 class="mt-5">Stock analyzer</h1>
 <p class="lead">Please select the CSV file and submit the form.</p>
 <form action="upload" method="post" enctype="multipart/form-data">
     <div class="input-group mb-3">
