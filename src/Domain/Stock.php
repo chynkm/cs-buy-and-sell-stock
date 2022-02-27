@@ -51,22 +51,25 @@ class Stock
         ];
     }
 
-    public function stockInfo()
+    /**
+     * Get stock information in a consolidated method
+     */
+    public function stockInfo(string $startDate, string $endDate): array
     {
-        return $this->bestProfit() + $this->meanAndStandardDeviation();
+        $dateFilledStocks = $this->fillMissingDates($startDate, $endDate);
+        return $this->bestProfit($dateFilledStocks)
+         + $this->meanAndStandardDeviation($dateFilledStocks);
     }
 
     /**
      * Calculates the minimum loss and maximum profit with buy/sell dates
-     *
-     * @return array
      */
-    public function bestProfit()
+    public function bestProfit(array $stocks): array
     {
         $profit = PHP_INT_MIN;
 
-        foreach ($this->stocks as $dateI => $priceI) {
-            foreach ($this->stocks as $dateJ => $priceJ) {
+        foreach ($stocks as $dateI => $priceI) {
+            foreach ($stocks as $dateJ => $priceJ) {
                 if ($dateJ > $dateI) {
                     $difference = $priceJ - $priceI;
 
@@ -89,22 +92,20 @@ class Stock
 
     /**
      * Calculates mean, standard deviation and stock profit
-     *
-     * @return array
      */
-    public function meanAndStandardDeviation()
+    public function meanAndStandardDeviation(array $stocks): array
     {
         $total = 0;
         $totalSquared = 0;
 
-        foreach ($this->stocks as $dateI => $priceI) {
+        foreach ($stocks as $dateI => $priceI) {
             $total += $priceI;
             $totalSquared += $priceI * $priceI;
         }
 
-        $n = count($this->stocks);
-        $mean = $total / $n;
-        $standardDeviation = sqrt(($totalSquared / $n) - ($mean * $mean));
+        $stockCount = count($stocks);
+        $mean = $total / $stockCount;
+        $standardDeviation = sqrt(($totalSquared / $stockCount) - ($mean * $mean));
 
         return [
             'mean' => round($mean, self::ROUND_OFF),
@@ -114,10 +115,8 @@ class Stock
 
     /**
      * Retrieve the previous date stock price
-     *
-     * @return int
      */
-    public function previousDateStockPrice(string $date)
+    public function previousDateStockPrice(string $date): int
     {
         if (isset($this->stocks[$date])) {
             return $this->stocks[$date];
@@ -128,7 +127,6 @@ class Stock
         }
 
         foreach ($this->stocks as $stockDate => $price) {
-
             if ($stockDate < $date) {
                 $previousPrice = $price;
             }
@@ -137,7 +135,10 @@ class Stock
         return $previousPrice;
     }
 
-    public function fillMissingDates(string $startDate, string $endDate)
+    /**
+     * Fill the missing days where stock price isn't available with the previous day value
+     */
+    public function fillMissingDates(string $startDate, string $endDate): array
     {
         $dateFilledStocks = [];
 

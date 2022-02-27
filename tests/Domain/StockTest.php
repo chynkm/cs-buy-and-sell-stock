@@ -106,17 +106,61 @@ class StockTest extends TestCase
                 'startDate' => '2020-02-15',
                 'endDate' => '2020-02-21',
                 'bestProfit' => [
-                    'profit' => 7,
-                    'buyDate' => '2020-02-21',
-                    'sellDate' => '2020-02-23',
-                    'stockProfit' => 1400,
+                    'profit' => 4,
+                    'buyDate' => '2020-02-15',
+                    'sellDate' => '2020-02-19',
+                    'stockProfit' => 800,
                 ],
                 'meanAndStandardDeviation' => [
-                    'mean' => 319.71,
-                    'standardDeviation' => 3.28,
+                    'mean' => 319.29,
+                    'standardDeviation' => 3.10,
                 ],
             ],
-
+            [
+                'GOOGL' => [
+                    '2020-02-11' => 1510,
+                    '2020-02-12' => 1518,
+                    '2020-02-14' => 1520,
+                    '2020-02-15' => 1523,
+                    '2020-02-16' => 1530,
+                    '2020-02-21' => 1483,
+                    '2020-02-22' => 1485,
+                ],
+                'startDate' => '2020-02-18',
+                'endDate' => '2020-02-23',
+                'bestProfit' => [
+                    'profit' => 2,
+                    'buyDate' => '2020-02-21',
+                    'sellDate' => '2020-02-22',
+                    'stockProfit' => 400,
+                ],
+                'meanAndStandardDeviation' => [
+                    'mean' => 1507.17,
+                    'standardDeviation' => 22.84,
+                ],
+            ],
+            [
+                'MSFT' => [
+                    '2020-02-11' => 185,
+                    '2020-02-12' => 184,
+                    '2020-02-15' => 189,
+                    '2020-02-18' => 187,
+                    '2020-02-21' => 178,
+                    '2020-02-22' => 180,
+                ],
+                'startDate' => '2020-02-11',
+                'endDate' => '2020-02-20',
+                'bestProfit' => [
+                    'profit' => 5,
+                    'buyDate' => '2020-02-12',
+                    'sellDate' => '2020-02-15',
+                    'stockProfit' => 1000,
+                ],
+                'meanAndStandardDeviation' => [
+                    'mean' => 186.5,
+                    'standardDeviation' => 2.01,
+                ],
+            ],
         ];
     }
 
@@ -131,14 +175,12 @@ class StockTest extends TestCase
         array $wantMeanAndStandardDeviation
     ): void{
         $stock = new Stock($stocks);
-        $gotBestProfit = $stock->bestProfit();
-        $gotMeanAndStandardDeviation = $stock->meanAndStandardDeviation();
+        $dateFilledStocks = $stock->fillMissingDates($startDate, $endDate);
+        $gotBestProfit = $stock->bestProfit($dateFilledStocks);
+        $gotMeanAndStandardDeviation = $stock->meanAndStandardDeviation($dateFilledStocks);
 
         $this->assertEquals($gotBestProfit, $wantBestProfit);
-        $this->assertEquals(
-            $gotMeanAndStandardDeviation,
-            $wantMeanAndStandardDeviation
-        );
+        $this->assertEquals($gotMeanAndStandardDeviation, $wantMeanAndStandardDeviation);
     }
 
     /**
