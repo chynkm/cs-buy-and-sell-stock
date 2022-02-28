@@ -33,7 +33,7 @@ class StockFile
                 continue;
             }
             $date = new DateTime($data[1]);
-            $stocks[$data[2]][$date->format(self::DATE_FORMAT)] = $data[3];
+            $stocks[strtoupper($data[2])][$date->format(self::DATE_FORMAT)] = $data[3];
         }
         fclose($handle);
 

@@ -28,10 +28,10 @@ class StockFileTest extends TestCase
     {
         $data = [
             'id_no,date,stock_name,price',
-            '1,11-02-2020,AAPL,320',
-            '2,11-02-2020,GOOGL,1510',
-            '3,11-02-2020,MSFT,185',
-            '4,12-02-2020,GOOGL,1518',
+            '1,11-02-2020,AaPL,320',
+            '2,2020-02-11,gOogL,1510',
+            '3,11 Feb 2020,msft,185',
+            '4,2020/02/12,GOOGL,1518',
         ];
 
         $handle = fopen($this->filename, 'wb');
