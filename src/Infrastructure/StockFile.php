@@ -59,7 +59,7 @@ class StockFile
             }
 
             $date = new DateTime($data[1]);
-            $stocks[strtoupper($data[2])][$date->format(self::DATE_FORMAT)] = $data[3];
+            $stocks[strtoupper($data[2])][$date->format(self::DATE_FORMAT)] = floatval($data[3]);
         }
         fclose($handle);
 

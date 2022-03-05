@@ -3,8 +3,15 @@ declare (strict_types = 1);
 
 namespace App\Action;
 
+use App\Infrastructure\StockFile;
+
 final class StockUploadAction
 {
+    public function __construct()
+    {
+        session_start();
+    }
+
     /**
      * @todo move path to a settings file
      */
@@ -32,6 +39,18 @@ final class StockUploadAction
         }
 
         move_uploaded_file($_FILES['stock_file']['tmp_name'], $uploadfile);
+
+        try {
+            $_SESSION['stocks'] = (new StockFile)->process($uploadfile);
+            $stocks = [];
+            foreach ($_SESSION['stocks'] as $stock => &$datePrice) {
+                ksort($datePrice);
+                $stocks[] = $stock;
+            }
+        } catch (Exception $e) {
+            // @todo need to complete
+        }
+        sort($stocks);
 
         ob_start();
         require $viewPath . 'upload.php';
