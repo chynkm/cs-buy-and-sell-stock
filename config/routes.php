@@ -10,6 +10,7 @@ $viewPath = __DIR__ . '/../views/';
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->get('/', new \App\Action\LandingPageAction);
+    $r->get('/stock-info', new \App\Action\StockInfoAction);
     $r->post('/upload', new \App\Action\StockUploadAction);
 });
 

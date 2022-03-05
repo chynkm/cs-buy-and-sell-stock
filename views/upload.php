@@ -1,13 +1,13 @@
 <?php include 'header.php';?>
 <p class="lead">We have successfully processed the uploaded stocks file.</p>
 
-<form>
+<form id="stock_info_form">
     <div class="row mb-2">
         <div class="col-sm-4">
             <label for="stock">Select a stock</label>
             <select class="form-control" id="stock">
                 <?php foreach ($stocks as $stock): ?>
-                <option><?php echo $stock; ?></option>
+                <option value="<?php echo $stock; ?>"><?php echo $stock; ?></option>
                 <?php endforeach;?>
             </select>
         </div>
@@ -25,7 +25,10 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Find best profit</button>
+    <button type="button" id="stock_info" data-route="/stock-info" class="btn btn-primary">Find best profit</button>
 </form>
+
+<div class="table-responsive col-4" id="stock_info_table">
+</div>
 
 <?php include 'footer.php';?>
