@@ -31,7 +31,7 @@ Please use the below form to retrieve the numbers.
     <button type="button" id="stock_info" data-route="/stock-info" class="btn btn-primary">Find best profit</button>
 </form>
 
-<div class="table-responsive col-4 mt-4" id="stock_info_table">
+<div class="table-responsive col-4 mt-4" id="stock_info_div">
 </div>
 
 <?php include 'footer.php';?>

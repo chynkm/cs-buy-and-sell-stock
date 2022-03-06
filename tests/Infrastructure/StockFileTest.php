@@ -207,13 +207,13 @@ class StockFileTest extends TestCase
                 // different date formats
                 'csv' => [
                     'id_no,date,stock_name,price',
-                    '1,11-02-2020,AaPL,320',
+                    '1,11-02-2020,AaPL,320.12',
                     '2,2020-02-11,gOogL,1510',
                     '3,11 Feb 2020,msft,185',
                     '4,2020/02/12,GOOGL,1518',
                 ],
                 'result' => [
-                    'AAPL' => ['2020-02-11' => 320],
+                    'AAPL' => ['2020-02-11' => 320.12],
                     'GOOGL' => [
                         '2020-02-11' => 1510,
                         '2020-02-12' => 1518,

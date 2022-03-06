@@ -55,7 +55,7 @@ class StockFile
             }
 
             $date = new DateTime($data[1]);
-            $stocks[strtoupper($data[2])][$date->format(DATE_FORMAT)] = intval($data[3]);
+            $stocks[strtoupper($data[2])][$date->format(DATE_FORMAT)] = floatval($data[3]);
         }
         fclose($handle);
 

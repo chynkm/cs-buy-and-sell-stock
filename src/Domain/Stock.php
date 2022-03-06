@@ -73,7 +73,7 @@ class Stock
         }
 
         return [
-            'profit' => $profit,
+            'profit' => round($profit, self::ROUND_OFF),
             'buyDate' => $buyDate,
             'sellDate' => $sellDate,
             'stockProfit' => round($profit * self::SHARE_COUNT, self::ROUND_OFF),
@@ -106,7 +106,7 @@ class Stock
     /**
      * Retrieve the previous date stock price
      */
-    public function previousDateStockPrice(string $date): int
+    public function previousDateStockPrice(string $date): float
     {
         if (isset($this->stocks[$date])) {
             return $this->stocks[$date];
@@ -122,7 +122,7 @@ class Stock
             }
         }
 
-        return $previousPrice;
+        return floatval($previousPrice);
     }
 
     /**

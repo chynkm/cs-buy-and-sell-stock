@@ -5,6 +5,7 @@ $(function() {
 var APP = APP || {};
 
 APP.upload = {
+    stockInfoDiv: $('#stock_info_div'),
 
     init: function() {
         this.initializeDatepicker();
@@ -20,15 +21,23 @@ APP.upload = {
     },
 
     getStockInfo: function() {
+        var self = this;
         $('#stock_info').click(function() {
+            self.stockInfoDiv.html('Calculating...');
+
             $.getJSON($(this).data('route'),{
                 stock: $('#stock').val(),
                 start_datepicker: $('#start_datepicker').val(),
                 end_datepicker: $('#end_datepicker').val()
             }).done(function(data) {
-                $('#stock_info_table').html(data);
+                self.stockInfoDiv.html(data);
+                setTimeout(function() {
+                    self.stockInfoDiv
+                        .find('.table-success')
+                        .removeClass('table-success');
+                }, 2000);
             }).fail(function( jqxhr, textStatus, error ) {
-                $('#stock_info_table').html(jqxhr.responseJSON);
+                self.stockInfoDiv.html(jqxhr.responseJSON);
             });
         });
     }
