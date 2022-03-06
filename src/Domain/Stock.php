@@ -32,6 +32,10 @@ class Stock
             throw new Exception('Please enter an end date.');
         }
 
+        if (empty($this->stocks)) {
+            throw new Exception('Please select a stock.');
+        }
+
         if (strtotime($startDate) === false) {
             throw new Exception('The start date value is incorrect');
         }
@@ -42,7 +46,6 @@ class Stock
 
         if ($startDate >= $endDate) {
             throw new Exception('The start date should be less than end date.');
-
         }
 
         $dateFilledStocks = $this->fillMissingDates($startDate, $endDate);

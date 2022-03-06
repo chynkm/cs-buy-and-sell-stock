@@ -213,6 +213,12 @@ class StockTest extends TestCase
         (new Stock($stocks))->stockInfo($startDate, $endDate);
     }
 
+    public function testEmptyStock(): void
+    {
+        $this->expectException(Exception::class);
+        (new Stock([]))->stockInfo('2020-02-11', '2020-02-14');
+    }
+
     /**
      * @return array<int, array>
      */

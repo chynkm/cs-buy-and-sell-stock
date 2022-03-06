@@ -10,7 +10,8 @@ final class StockInfoAction
 {
     public function __invoke()
     {
-        $stock = new Stock($_SESSION['stocks'][$_GET['stock']]);
+        $getStock = isset($_GET['stock']) ? $_SESSION['stocks'][$_GET['stock']] : [];
+        $stock = new Stock($getStock);
 
         try {
             $stockInfo = $stock->stockInfo(
