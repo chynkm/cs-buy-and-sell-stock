@@ -42,7 +42,7 @@ class StockFile
                 throw new Exception('The CSV file is missing a date value');
             }
 
-            if (strtotime($data[1]) == false) {
+            if (strtotime($data[1]) === false) {
                 throw new Exception('The CSV file contains an incorrect date value');
             }
 

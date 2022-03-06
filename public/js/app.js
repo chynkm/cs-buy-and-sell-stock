@@ -28,7 +28,7 @@ APP.upload = {
             }).done(function(data) {
                 $('#stock_info_table').html(data);
             }).fail(function( jqxhr, textStatus, error ) {
-                // @todo needs to be completed
+                $('#stock_info_table').html(jqxhr.responseJSON);
             });
         });
     }

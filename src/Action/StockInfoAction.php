@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace App\Action;
 
 use App\Domain\Stock;
+use Exception;
 
 final class StockInfoAction
 {
@@ -12,6 +13,8 @@ final class StockInfoAction
      */
     public function __invoke()
     {
+        $viewPath = __DIR__ . '/../../views/';
+
         $stock = new Stock($_SESSION['stocks'][$_GET['stock']]);
         try {
             $stockInfo = $stock->stockInfo(
@@ -19,10 +22,17 @@ final class StockInfoAction
                 $_GET['end_datepicker']
             );
         } catch (Exception $e) {
-            // @todo need to complete
+            $errorMessage = $e->getMessage();
+
+            ob_start();
+            require $viewPath . 'stockError.php';
+            $html = ob_get_contents();
+            ob_end_clean();
+
+            http_response_code(422);
+            return json_encode($html);
         }
 
-        $viewPath = __DIR__ . '/../../views/';
         ob_start();
         require $viewPath . 'info.php';
         $html = ob_get_contents();

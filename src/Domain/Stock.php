@@ -28,7 +28,29 @@ class Stock
      */
     public function stockInfo(string $startDate, string $endDate): array
     {
+        if (empty($startDate)) {
+            throw new Exception('Please enter a start date.');
+        }
+
+        if (empty($endDate)) {
+            throw new Exception('Please enter an end date.');
+        }
+
+        if (strtotime($startDate) === false) {
+            throw new Exception('The start date value is incorrect');
+        }
+
+        if (strtotime($endDate) === false) {
+            throw new Exception('The end date value is incorrect');
+        }
+
+        if ($startDate > $endDate) {
+            throw new Exception('The start date should be less than end date.');
+
+        }
+
         $dateFilledStocks = $this->fillMissingDates($startDate, $endDate);
+        ksort($dateFilledStocks);
         return $this->bestProfit($dateFilledStocks)
          + $this->meanAndStandardDeviation($dateFilledStocks);
     }

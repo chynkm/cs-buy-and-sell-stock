@@ -125,6 +125,55 @@ class StockTest extends TestCase
     /**
      * @return array<int, array>
      */
+    public function invalidStockInfoProvider(): array
+    {
+        return [
+            [
+                // missing start date
+                'startDate' => '',
+                'endDate' => '2020-02-21',
+            ],
+            [
+                // missing end date
+                'startDate' => '2020-02-11',
+                'endDate' => '',
+            ],
+            [
+                // missing start and end date
+                'startDate' => '',
+                'endDate' => '',
+            ],
+            [
+                // start date > end date
+                'startDate' => '2020-02-23',
+                'endDate' => '2020-02-11',
+            ],
+            [
+                // invalid start date
+                'startDate' => '2020 11',
+                'endDate' => '2020-02-11',
+            ],
+            [
+                // invalid end date
+                'startDate' => '2020-02-11',
+                'endDate' => '2020 21',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidStockInfoProvider
+     */
+    public function testInvalidStockProviders(string $startDate, string $endDate): void
+    {
+        $this->expectException(Exception::class);
+        $stocks = self::AAPL_STOCKS;
+        (new Stock($stocks))->stockInfo($startDate, $endDate);
+    }
+
+    /**
+     * @return array<int, array>
+     */
     public function validStockProvidersForPreviousDateStockPrice(): array
     {
         return [

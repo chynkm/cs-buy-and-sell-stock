@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace App\Action;
 
 use App\Infrastructure\StockFile;
+use Exception;
 
 final class StockUploadAction
 {
@@ -43,8 +44,7 @@ final class StockUploadAction
         try {
             $_SESSION['stocks'] = (new StockFile)->process($uploadfile);
             $stocks = [];
-            foreach ($_SESSION['stocks'] as $stock => &$datePrice) {
-                ksort($datePrice);
+            foreach ($_SESSION['stocks'] as $stock => $datePrice) {
                 $stocks[] = $stock;
             }
         } catch (Exception $e) {
