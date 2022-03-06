@@ -59,6 +59,10 @@ class StockFile
         }
         fclose($handle);
 
+        if (empty($stocks)) {
+            throw new Exception('The CSV file is missing stock values.');
+        }
+
         return $stocks;
     }
 }

@@ -40,7 +40,7 @@ class Stock
             throw new Exception('The end date value is incorrect');
         }
 
-        if ($startDate > $endDate) {
+        if ($startDate >= $endDate) {
             throw new Exception('The start date should be less than end date.');
 
         }

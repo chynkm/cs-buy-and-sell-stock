@@ -102,10 +102,16 @@ class StockFileTest extends TestCase
                 ],
             ],
             [
-                // missing everything
+                // missing stock
                 'csv' => [
                     'id_no,date,stock_name,price',
                     '',
+                ],
+            ],
+            [
+                // missing stock
+                'csv' => [
+                    'id_no,date,stock_name,price',
                 ],
             ],
             [

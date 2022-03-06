@@ -26,6 +26,7 @@ class StockTest extends TestCase
     {
         return [
             [
+                // start/end dates are present
                 'AAPL' => self::AAPL_STOCKS,
                 'startDate' => '2020-02-15',
                 'endDate' => '2020-02-21',
@@ -41,6 +42,39 @@ class StockTest extends TestCase
                 ],
             ],
             [
+                // start date present and end date missing
+                'AAPL' => self::AAPL_STOCKS,
+                'startDate' => '2020-02-11',
+                'endDate' => '2020-02-12',
+                'bestProfit' => [
+                    'profit' => 0,
+                    'buyDate' => '2020-02-11',
+                    'sellDate' => '2020-02-12',
+                    'stockProfit' => 0,
+                ],
+                'meanAndStandardDeviation' => [
+                    'mean' => 320,
+                    'standardDeviation' => 0,
+                ],
+            ],
+            [
+                // start date present and end date missing
+                'AAPL' => self::AAPL_STOCKS,
+                'startDate' => '2020-02-13',
+                'endDate' => '2020-02-15',
+                'bestProfit' => [
+                    'profit' => 0,
+                    'buyDate' => '2020-02-13',
+                    'sellDate' => '2020-02-14',
+                    'stockProfit' => 0,
+                ],
+                'meanAndStandardDeviation' => [
+                    'mean' => 322.33,
+                    'standardDeviation' => 2.36,
+                ],
+            ],
+            [
+                // first start date and last end date present
                 'AAPL' => self::AAPL_STOCKS,
                 'startDate' => '2020-02-11',
                 'endDate' => '2020-02-23',
@@ -56,6 +90,8 @@ class StockTest extends TestCase
                 ],
             ],
             [
+                // start date inside given data
+                // and end date exceeding given data
                 'GOOGL' => [
                     '2020-02-11' => 1510,
                     '2020-02-12' => 1518,
@@ -79,6 +115,7 @@ class StockTest extends TestCase
                 ],
             ],
             [
+                // different stock value
                 'MSFT' => [
                     '2020-02-11' => 185,
                     '2020-02-12' => 184,
@@ -139,6 +176,11 @@ class StockTest extends TestCase
                 'endDate' => '',
             ],
             [
+                // same start and end date
+                'startDate' => '2020-02-11',
+                'endDate' => '2020-02-11',
+            ],
+            [
                 // missing start and end date
                 'startDate' => '',
                 'endDate' => '',
@@ -164,7 +206,7 @@ class StockTest extends TestCase
     /**
      * @dataProvider invalidStockInfoProvider
      */
-    public function testInvalidStockProviders(string $startDate, string $endDate): void
+    public function testInvalidStockInfoProviders(string $startDate, string $endDate): void
     {
         $this->expectException(Exception::class);
         $stocks = self::AAPL_STOCKS;

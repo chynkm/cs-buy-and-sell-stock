@@ -1,3 +1,4 @@
+<h2>Stock result</h2>
 <table class="table">
     <tbody>
         <tr>
