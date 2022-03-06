@@ -105,6 +105,17 @@ class StockFileTest extends TestCase
                 // missing stock
                 'csv' => [
                     'id_no,date,stock_name,price',
+                    '28,11-02-2020,BPL',
+                    '',
+                    '29,15-02-2020,BPL,310',
+                    '30,13-02-2020,BPL,290',
+                    '31,18-02-2020,BPL,280',
+                ],
+            ],
+            [
+                // missing stock
+                'csv' => [
+                    'id_no,date,stock_name,price',
                     '',
                 ],
             ],
