@@ -5,12 +5,8 @@ namespace App\Action;
 
 final class LandingPageAction
 {
-    /**
-     * @todo move path to a settings file
-     */
     public function __invoke()
     {
-        $viewPath = __DIR__ . '/../../views/';
-        require $viewPath . 'index.php';
+        require VIEW_PATH . 'index.php';
     }
 }

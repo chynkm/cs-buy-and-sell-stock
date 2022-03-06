@@ -13,10 +13,6 @@ class Stock
     public $stock;
     const SHARE_COUNT = 200;
     const ROUND_OFF = 2;
-    /**
-     * @todo move to config file
-     */
-    const DATE_FORMAT = 'Y-m-d';
 
     public function __construct(array $stocks)
     {
@@ -141,16 +137,16 @@ class Stock
         $interval = new DateInterval('P1D');
         $dateRange = new DatePeriod($startDate, $interval, $endDate);
 
-        if (!isset($this->stocks[$startDate->format(self::DATE_FORMAT)])) {
-            $this->stocks[$startDate->format(self::DATE_FORMAT)] = $this->previousDateStockPrice($startDate->format(self::DATE_FORMAT));
+        if (!isset($this->stocks[$startDate->format(DATE_FORMAT)])) {
+            $this->stocks[$startDate->format(DATE_FORMAT)] = $this->previousDateStockPrice($startDate->format(DATE_FORMAT));
         }
 
         foreach ($dateRange as $date) {
-            if (isset($this->stocks[$date->format(self::DATE_FORMAT)])) {
-                $latestStockValue = $this->stocks[$date->format(self::DATE_FORMAT)];
-                $dateFilledStocks[$date->format(self::DATE_FORMAT)] = $this->stocks[$date->format(self::DATE_FORMAT)];
+            if (isset($this->stocks[$date->format(DATE_FORMAT)])) {
+                $latestStockValue = $this->stocks[$date->format(DATE_FORMAT)];
+                $dateFilledStocks[$date->format(DATE_FORMAT)] = $this->stocks[$date->format(DATE_FORMAT)];
             } else {
-                $dateFilledStocks[$date->format(self::DATE_FORMAT)] = $latestStockValue;
+                $dateFilledStocks[$date->format(DATE_FORMAT)] = $latestStockValue;
             }
         }
 

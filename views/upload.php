@@ -1,5 +1,8 @@
 <?php include 'header.php';?>
-<p class="lead">We have successfully processed the uploaded stocks file.</p>
+<p class="lead">
+We have successfully processed the uploaded stocks file.<br/>
+Please use the below form to retrieve the numbers.
+</p>
 
 <form id="stock_info_form">
     <div class="row mb-2">

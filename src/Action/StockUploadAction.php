@@ -13,12 +13,8 @@ final class StockUploadAction
         session_start();
     }
 
-    /**
-     * @todo move path to a settings file
-     */
     public function __invoke()
     {
-        $viewPath = __DIR__ . '/../../views/';
         $uploadfile = 'storage/' . basename($_FILES['stock_file']['name']);
         $errorMessage = false;
 
@@ -33,7 +29,7 @@ final class StockUploadAction
         if ($errorMessage) {
             http_response_code(422);
             ob_start();
-            require $viewPath . 'error.php';
+            require VIEW_PATH . 'error.php';
             $var = ob_get_contents();
             ob_end_clean();
             return $var;
@@ -53,7 +49,7 @@ final class StockUploadAction
         sort($stocks);
 
         ob_start();
-        require $viewPath . 'upload.php';
+        require VIEW_PATH . 'upload.php';
         $var = ob_get_contents();
         ob_end_clean();
         return $var;

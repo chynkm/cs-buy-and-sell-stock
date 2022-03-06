@@ -8,14 +8,15 @@ use Exception;
 
 final class StockInfoAction
 {
-    /**
-     * @todo move path to a settings file
-     */
+    public function __construct()
+    {
+        session_start();
+    }
+
     public function __invoke()
     {
-        $viewPath = __DIR__ . '/../../views/';
-
         $stock = new Stock($_SESSION['stocks'][$_GET['stock']]);
+
         try {
             $stockInfo = $stock->stockInfo(
                 $_GET['start_datepicker'],
@@ -25,7 +26,7 @@ final class StockInfoAction
             $errorMessage = $e->getMessage();
 
             ob_start();
-            require $viewPath . 'stockError.php';
+            require VIEW_PATH . 'stockError.php';
             $html = ob_get_contents();
             ob_end_clean();
 
@@ -34,7 +35,7 @@ final class StockInfoAction
         }
 
         ob_start();
-        require $viewPath . 'info.php';
+        require VIEW_PATH . 'info.php';
         $html = ob_get_contents();
         ob_end_clean();
 

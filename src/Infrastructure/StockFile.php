@@ -8,10 +8,6 @@ use Exception;
 
 class StockFile
 {
-    /**
-     * @todo move to config file
-     */
-    const DATE_FORMAT = 'Y-m-d';
     const ROW_ITEMS = 4;
 
     public function process(string $filename): array
@@ -59,7 +55,7 @@ class StockFile
             }
 
             $date = new DateTime($data[1]);
-            $stocks[strtoupper($data[2])][$date->format(self::DATE_FORMAT)] = intval($data[3]);
+            $stocks[strtoupper($data[2])][$date->format(DATE_FORMAT)] = intval($data[3]);
         }
         fclose($handle);
 

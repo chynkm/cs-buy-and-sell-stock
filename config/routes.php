@@ -3,11 +3,6 @@
  * Most of the code copied from nikic/fast-route
  */
 
-/**
- * @todo move path to a settings file
- */
-$viewPath = __DIR__ . '/../views/';
-
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->get('/', new \App\Action\LandingPageAction);
     $r->get('/stock-info', new \App\Action\StockInfoAction);
@@ -26,7 +21,7 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         http_response_code(404);
-        require $viewPath . '404.php';
+        require VIEW_PATH . '404.php';
         break;
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
         $allowedMethods = $routeInfo[1];
