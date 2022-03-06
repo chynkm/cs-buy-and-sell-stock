@@ -44,7 +44,15 @@ final class StockUploadAction
                 $stocks[] = $stock;
             }
         } catch (Exception $e) {
-            // @todo need to complete
+            $errorMessage = $e->getMessage();
+
+            ob_start();
+            require VIEW_PATH . 'error.php';
+            $var = ob_get_contents();
+            ob_end_clean();
+
+            http_response_code(422);
+            return $var;
         }
         sort($stocks);
 

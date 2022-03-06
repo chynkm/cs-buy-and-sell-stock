@@ -7,6 +7,7 @@ final class LandingPageAction
 {
     public function __invoke()
     {
+        unset($_SESSION['stocks']);
         require VIEW_PATH . 'index.php';
     }
 }

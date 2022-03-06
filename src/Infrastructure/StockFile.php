@@ -31,27 +31,27 @@ class StockFile
             }
 
             if (count($data) != self::ROW_ITEMS) {
-                throw new Exception('The CSV file is missing a column entry');
+                throw new Exception('The CSV file is missing a column entry.');
             }
 
             if (empty($data[1])) {
-                throw new Exception('The CSV file is missing a date value');
+                throw new Exception('The CSV file is missing a date value.');
             }
 
             if (strtotime($data[1]) === false) {
-                throw new Exception('The CSV file contains an incorrect date value');
+                throw new Exception('The CSV file contains an incorrect date value.');
             }
 
             if (empty($data[2])) {
-                throw new Exception('The CSV file is missing a stock value');
+                throw new Exception('The CSV file is missing a stock value.');
             }
 
             if (empty($data[3])) {
-                throw new Exception('The CSV file is missing a price value');
+                throw new Exception('The CSV file is missing a price value.');
             }
 
             if (!is_numeric($data[3])) {
-                throw new Exception('The CSV file contains an incorrect price value');
+                throw new Exception('The CSV file contains an incorrect price value.');
             }
 
             $date = new DateTime($data[1]);

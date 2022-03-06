@@ -10,5 +10,14 @@
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <div class="container">
-                <h1 class="mt-5">Stock analyzer</h1>
+                <div class="row">
+                    <div class="col">
+                        <h1 class="mt-5">Stock analyzer</h1>
+                    </div>
+                    <?php if ($_SERVER['REQUEST_URI'] != '/'): ?>
+                    <div class="col-auto mt-5">
+                        <a href="/" type="button" class="btn btn-link">Home</a>
+                    </div>
+                    <?php endif;?>
+                </div>
                 <hr>

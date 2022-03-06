@@ -8,11 +8,6 @@ use Exception;
 
 final class StockInfoAction
 {
-    public function __construct()
-    {
-        session_start();
-    }
-
     public function __invoke()
     {
         $stock = new Stock($_SESSION['stocks'][$_GET['stock']]);
