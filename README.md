@@ -28,7 +28,7 @@ Supported date formats for the input file is:
 
 ## Deployment
 * Clone the repository
-* The webroot should point to th `public` directory.
+* The webroot should point to the `public` directory.
 * Execute the following command in the project directory to install the HTTP router.
 ```
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
